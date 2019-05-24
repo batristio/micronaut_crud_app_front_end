@@ -1,12 +1,11 @@
 <template>
     <div class="hello">
-        <div>
-            <ul v-for="person in people" v-bind:key="person">
-                <li>First Name: {{ person.firstName }}</li>
-                <li>Last Name: {{ person.lastName }}</li>
-                <li>Age: {{ person.age }}</li>
-                <li>Id: {{ person.id }}</li>
-            </ul>
+        <div v-for="(person, i) in people" v-bind:key="person">
+            <span>First Name: {{ person.firstName }}</span><br/>
+            <span>Last Name: {{ person.lastName }}</span><br/>
+            <span>Age: {{ person.age }}</span><br/>
+            <span>Id: {{ person.id }}</span><br/>
+            <button v-on:click="deletePerson(person.id, i)">x</button><br/>
         </div>
     </div>
 </template>
@@ -24,10 +23,20 @@ export default {
         };
     },
     created: function () {
-        axios.get('http://192.168.1.173:8086/person/list/')
+        axios
+            .get('http://192.168.1.173:8086/person/list/')
             .then(response => {
             this.people = response.data;
         });
+    },
+    methods: {
+        deletePerson(id, i) {
+            axios
+                .delete('http://192.168.1.173:8086/person/delete/' + id)
+                .then(() => {
+                    this.people.slice(i, 1);
+                });
+        }
     }
 }
 </script>
