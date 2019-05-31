@@ -1,21 +1,12 @@
 <template>
-    <div class="hello">
-        <!--<div v-for="(person, i) in people" v-bind:key="i">
-            <span>First Name: {{ person.firstName }}</span><br/>
-            <span>Last Name: {{ person.lastName }}</span><br/>
-            <span>Age: {{ person.age }}</span><br/>
-            <span>Id: {{ person.id }}</span><br/>
-            <button v-on:click="deletePerson(person.id, i)">x</button><br/>
-        </div>-->
-        <div>
-            <b-table striped hover :items="people" :fields="fields">
-                <template slot="show_details">
-                    <b-button size="sm" @click="deletePerson(row.id, data.index)" class="mr-2">
-                        x
-                    </b-button>
-                </template>
-            </b-table>
-        </div>
+    <div>
+        <b-table :items="people" :fields="fields" striped hover>
+            <template slot="deletePerson" slot-scope="row">
+                <b-button size="sm" @click="deletePerson(row.id, data.index)">
+                    Delete {{ row.value }}
+                </b-button>
+            </template>
+        </b-table>
     </div>
 </template>
 
