@@ -1,12 +1,24 @@
 <template>
     <div>
-        <b-table :items="people" :fields="fields" striped hover>
+        <b-table :items="people"
+                 :fields="fields"
+                 striped
+                 hover
+                 :per-page="perPage"
+                 :current-page="currentPage">
             <template slot="deletePerson" slot-scope="row">
                 <b-button size="sm" @click="deletePerson(row.item.id, row.index)">
                     Delete
                 </b-button>
             </template>
         </b-table>
+        <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="my-table"
+                class="centre"
+        ></b-pagination>
     </div>
 </template>
 
@@ -27,6 +39,8 @@ export default {
                 { age          : { sortable: true } },
                 { deletePerson : { label: "Delete" } }
             ],
+            perPage: 10,
+            currentPage: 1,
         };
     },
     created: function () {
@@ -43,6 +57,11 @@ export default {
                 .then(() => {
                     this.people.splice(i, 1);
                 });
+        }
+    },
+    computed: {
+        rows() {
+            return this.people.length
         }
     }
 }
