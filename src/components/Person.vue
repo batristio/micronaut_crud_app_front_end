@@ -2,8 +2,8 @@
     <div>
         <b-table :items="people" :fields="fields" striped hover>
             <template slot="deletePerson" slot-scope="row">
-                <b-button size="sm" @click="deletePerson(row.id, data.index)">
-                    Delete {{ row.value }}
+                <b-button size="sm" @click="deletePerson(row.item.id, row.index)">
+                    Delete
                 </b-button>
             </template>
         </b-table>
@@ -21,6 +21,7 @@ export default {
         return {
             people : [],
             fields : [
+                'id',
                 { firstName    : { sortable: true } },
                 { lastName     : { sortable: true } },
                 { age          : { sortable: true } },
@@ -40,7 +41,7 @@ export default {
             axios
                 .delete('http://localhost:8086/person/delete/' + id)
                 .then(() => {
-                    this.people.slice(i, 1);
+                    this.people.splice(i, 1);
                 });
         }
     }
